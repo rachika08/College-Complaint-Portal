@@ -1,0 +1,45 @@
+<%- include('../partials/header', { user: user }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="fw-bold text-primary">Welcome, <%= user.name %> 👋</h3>
+  <a href="/newComplaint" class="btn btn-success">
+    <i class="bi bi-plus-circle"></i> New Complaint
+  </a>
+</div>
+
+<% if (complaints.length === 0) { %>
+  <div class="alert alert-info">You have not submitted any complaints yet.</div>
+<% } else { %>
+  <div class="table-responsive">
+    <table class="table table-hover shadow-sm rounded">
+      <thead class="table-primary">
+        <tr>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% complaints.forEach(c => { %>
+          <tr>
+            <td><%= c.category %></td>
+            <td><%= c.description %></td>
+            <td>
+              <% if (c.status === 'Pending') { %>
+                <span class="badge bg-warning text-dark">Pending</span>
+              <% } else if (c.status === 'In Progress') { %>
+                <span class="badge bg-info text-dark">In Progress</span>
+              <% } else { %>
+                <span class="badge bg-success">Resolved</span>
+              <% } %>
+            </td>
+            <td><%= new Date(c.date).toLocaleString() %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>

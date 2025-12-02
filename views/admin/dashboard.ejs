@@ -1,0 +1,71 @@
+<%- include('../partials/header', { user: user }) %>
+
+<% if (success && success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <%= success %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+
+<h3 class="fw-bold text-primary mb-4">Admin Dashboard</h3>
+
+<div class="table-responsive">
+  <table class="table table-bordered align-middle shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>Student</th>
+        <th>Email</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% complaints.forEach(c => { %>
+        <tr>
+          <td><%= c.student.name %></td>
+          <td><%= c.student.email %></td>
+          <td><%= c.category %></td>
+          <td><%= c.description %></td>
+          <td>
+            <% if (c.status === 'Pending') { %>
+              <span class="badge bg-warning text-dark">Pending</span>
+            <% } else if (c.status === 'In Progress') { %>
+              <span class="badge bg-info text-dark">In Progress</span>
+            <% } else { %>
+              <span class="badge bg-success">Resolved</span>
+            <% } %>
+          </td>
+          <td>
+            <form action="/admin/complaints/<%= c._id %>/status" method="POST" class="d-flex">
+              <select name="status" class="form-select form-select-sm me-2">
+                <option>Pending</option>
+                <option>In Progress</option>
+                <option>Resolved</option>
+                <option>Rejected</option>
+              </select>
+              <button class="btn btn-success btn-sm">✔</button>
+            </form>
+          </td>
+          <td>
+            <form action="/admin/delete/<%= c._id %>" method="POST">
+              <button class="btn btn-danger btn-sm">🗑️</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../partials/footer') %>

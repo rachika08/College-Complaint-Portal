@@ -1,0 +1,26 @@
+<%- include('../partials/header', { user: user }) %>
+
+<div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+  <h4 class="fw-bold text-primary mb-3">Submit New Complaint</h4>
+  <form action="/newComplaint" method="POST">
+    <div class="mb-3">
+      <label class="form-label">Complaint Category</label>
+      <select name="category" class="form-select" required>
+        <option value="">Select category</option>
+        <option>Academic</option>
+        <option>Hostel</option>
+        <option>Canteen</option>
+        <option>Transport</option>
+        <option>Technical</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control" rows="4" placeholder="Enter complaint details..." required></textarea>
+    </div>
+    <button class="btn btn-primary w-100">Submit Complaint</button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
