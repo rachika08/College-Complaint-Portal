@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoStore=require("connect-mongo").default;
 const bodyParser = require("body-parser");
 const path = require("path");
 const Admin = require("./models/Admin");
@@ -21,11 +22,18 @@ app.set("view engine", "ejs");
 
 app.use(flash());
 
+
 app.use(
   session({
-    secret: "complaintportal",
+    secret: process.env.SESS_PSWD,
     resave: false,
     saveUninitialized: false,
+    store:MongoStore.create({
+      mongoUrl:process.env.MONGO_ATLAS_URL,
+    }),
+    cookie:{
+      maxAge:1000*60*60*24,
+    }
   })
 );
 
