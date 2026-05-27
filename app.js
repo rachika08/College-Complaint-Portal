@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -35,12 +36,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// MongoDB connection
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/collegeComplaintDB")
+  .connect(process.env.MONGO_ATLAS_URL)
   .then(async () => {
-    console.log("✅ MongoDB Connected");
-    await createDefaultAdmin(); // ✅ Create default admin after connection
+    console.log("MongoDB Connected");
+    await createDefaultAdmin(); 
   })
   .catch((err) => console.log(err));
 
@@ -62,30 +63,21 @@ async function createDefaultAdmin() {
     const existing = await Admin.findOne({ email: "admin@college.com" });
     if (!existing) {
       await Admin.create({
-        email: "admin@college.com",
-        password: "admin123" // will be auto-hashed by the schema
+       
+        email: process.env.ADMIN_EMAIL,
+        password: process.env.ADMIN_PSWD
       });
-      console.log("✅ Default Admin Created Successfully!");
-      console.log("👉 Email: admin@college.com");
-      console.log("👉 Password: admin123");
+      console.log("Default Admin Created Successfully!");
+      
     } else {
-      console.log("ℹ️ Admin already exists. Skipping creation.");
+      console.log("Admin already exists. Skipping creation.");
     }
   } catch (err) {
-    console.error("❌ Error creating default admin:", err);
+    console.error("Error creating default admin:", err);
   }
 }
 
-// app.get("/addUser", async (req, res) => {
-//   const newUser = new User({
-//     name: "Test User",
-//     email: "test@example.com",
-//     password: "12345",
-//   });
-//   await newUser.save();
-//   res.send("✅ User added!");
-// });
-// Start server
-app.listen(3000, () =>
-  console.log("🚀 Server running on http://localhost:3000")
+
+app.listen(process.env.PORT, () =>
+  console.log("Server running")
 );

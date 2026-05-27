@@ -13,24 +13,24 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("📥 Login Attempt:", email, password); // Debug line
+  console.log("Login Attempt:", email, password); 
 
   const admin = await Admin.findOne({ email });
   if (!admin) {
-    console.log("❌ No admin found");
+    console.log("No admin found");
     return res.render("admin/login", { error: "Invalid credentials" });
   }
 
   const valid = await bcrypt.compare(password, admin.password);
-  console.log("🔍 Password match:", valid);
+  console.log("Password match:", valid);
 
   if (!valid) {
-    console.log("❌ Incorrect password");
+    console.log("Incorrect password");
     return res.render("admin/login", { error: "Invalid credentials" });
   }
 
   req.session.adminId = admin._id;
-  console.log("✅ Admin logged in:", admin.email);
+  console.log("Admin logged in:", admin.email);
   res.redirect("/admin/dashboard");
 });
 
@@ -48,7 +48,7 @@ router.get("/dashboard", async (req, res) => {
     const complaints = await Complaint.find().populate("student", "name email");
     res.render("admin/dashboard", { complaints });
   } catch (err) {
-    console.error("❌ Error fetching complaints:", err);
+    console.error("Error fetching complaints:", err);
     res.status(500).send("Error loading dashboard");
   }
 });
@@ -63,10 +63,10 @@ router.post("/complaints/:id/status", isAdminLoggedIn, async (req, res) => {
       adminRemark: remark
     });
 
-    req.flash("success", "✅ Complaint status updated successfully!");
+    req.flash("success", "Complaint status updated successfully!");
     res.redirect("/admin/dashboard");
   } catch (err) {
-    console.error("❌ Error updating status:", err);
+    console.error("Error updating status:", err);
     req.flash("error", "Something went wrong while updating status!");
     res.redirect("/admin/dashboard");
   }
