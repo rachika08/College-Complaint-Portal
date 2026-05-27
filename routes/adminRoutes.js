@@ -71,6 +71,22 @@ router.post("/complaints/:id/status", isAdminLoggedIn, async (req, res) => {
     res.redirect("/admin/dashboard");
   }
 });
+//delete
+router.post("/delete/:id",isAdminLoggedIn,async(req,res)=>{
+  try {
+    await Complaint.findByIdAndDelete(req.params.id);
+    req.flash("sucess","Complaint deleted successfully!");
+    res.redirect("/admin/dashboard");
+  } catch (error) {
+    console.log(error);
+    req.flash("error", "Error deleting complaint!");
+
+    res.redirect("/admin/dashboard");
+    
+  }
+});
+
+
 
 // Logout
 router.get("/logout", (req, res) => {
