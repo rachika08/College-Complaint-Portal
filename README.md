@@ -2,6 +2,8 @@
 
 CampusVoice is a web-based student grievance and complaint management system where students can register, log in, and submit complaints, while administrators can manage and monitor complaints through an admin dashboard.
 
+Live Link : https://campusvoice-hojg.onrender.com
+
 ---
 
 ## Features
